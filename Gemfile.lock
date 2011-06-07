@@ -3,6 +3,7 @@ GEM
   specs:
     nokogiri (1.4.4)
     ruby-hmac (0.4.0)
+    uuidtools (2.1.2)
 
 PLATFORMS
   ruby
@@ -10,3 +11,4 @@ PLATFORMS
 DEPENDENCIES
   nokogiri
   ruby-hmac
+  uuidtools
