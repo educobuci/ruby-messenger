@@ -1,9 +1,10 @@
-require File.expand_path "lib/ruby_messenger.rb"
+require "msn-config"
+require "ruby-messenger"
 
 class RubyMessengerTest < Test::Unit::TestCase
   def setup    
-    @email = ""
-    @password = ""
+    @email = MsnConfig::EMAIL
+    @password = MsnConfig::PASSWORD
     @msn = RubyMessenger.new()
   end
   

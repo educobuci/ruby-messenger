@@ -10,7 +10,7 @@ class RubyMessenger
   DEFAULT_HOST = "messenger.hotmail.com"
   DEFAULT_PORT = 1863
   BUFFER_SIZE = 8 * 1024
-  MSNP_VERSION = "MSNP21 CVR0"
+  MSNP_VERSION = "MSNP18 CVR0"
   DEFAULT_CVR = "0x0409 winnt 6.1.0 i386 MSNMSGR 15.4.3508.1109 MSNMSGR"
   SSO_HOST = "https://login.live.com/RST.srf"
   SSO_MSN_HOST = "https://msnia.login.live.com/pp550/RST.srf"
@@ -58,14 +58,13 @@ class RubyMessenger
     
     while (l = @socket.readpartial 1014).size > 0
       puts l
-    end
-    
+    end    
     
     @socket.close
   end
   
   def auth_sso(email, password, policy)
-    template = File.open("lib/auth_soap_template.xml").read()
+    template = File.open("lib/soap_templates/auth.xml").read()
     template.gsub!(/EMAIL/, email)
     template.gsub!(/PASSWORD/, password)
     template.gsub!(/POLICY/, policy)

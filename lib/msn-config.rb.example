@@ -1,0 +1,4 @@
+module MsnConfig
+  EMAIL = "email@hotmail.com"
+  PASSWORD = "password"
+end
