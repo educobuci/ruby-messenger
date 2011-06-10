@@ -79,10 +79,12 @@ class RubyMessenger
     end
     
     doc = Nokogiri::XML(response.body)
-    ticket = (doc.xpath "//wsse:BinarySecurityToken", "wsse" => "http://schemas.xmlsoap.org/ws/2003/06/secext").text
-    secret = (doc.xpath "//wst:BinarySecret", "wst" => "http://schemas.xmlsoap.org/ws/2004/04/trust")[1].text    
     
-    return { :ticket => ticket, :secret => secret }
+    ticket = (doc.xpath "//wsse:BinarySecurityToken", "wsse" => "http://schemas.xmlsoap.org/ws/2003/06/secext")[0].text
+    secret = (doc.xpath "//wst:BinarySecret", "wst" => "http://schemas.xmlsoap.org/ws/2004/04/trust")[1].text    
+    contacts_token = (doc.xpath "//wst:BinarySecret", "wst" => "http://schemas.xmlsoap.org/ws/2004/04/trust")[2].text
+    
+    return { :ticket => ticket, :secret => secret, :contacts_token => contacts_token }
   end
   
   def encrypt_key(secret_key, nonce, iv=nil)

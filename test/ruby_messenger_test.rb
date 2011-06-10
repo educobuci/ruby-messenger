@@ -9,13 +9,14 @@ class RubyMessengerTest < Test::Unit::TestCase
   end
   
   def test_connect    
-    @msn.connect(@email, @password)
+    #@msn.connect(@email, @password)
   end
   
   def test_sso
     auth = @msn.auth_sso(@email, @password, "MBI_KEY")
     assert_not_nil(auth[:ticket])
     assert_not_nil(auth[:secret])
+    assert_not_nil(auth[:contacts_token])
   end
   
   def test_encrypt
