@@ -1,5 +1,5 @@
-require "msn-config"
 require "ruby-messenger"
+require_relative "msn-config"
 
 class RubyMessengerTest < Test::Unit::TestCase
   def setup    
@@ -12,7 +12,7 @@ class RubyMessengerTest < Test::Unit::TestCase
     @msn.connect(@email, @password)
   end
   
-  def test_sso    
+  def test_sso
     auth = @msn.auth_sso(@email, @password, "MBI_KEY")
     assert_not_nil(auth[:ticket])
     assert_not_nil(auth[:secret])
