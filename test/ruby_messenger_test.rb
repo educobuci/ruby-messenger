@@ -29,4 +29,21 @@ class RubyMessengerTest < Test::Unit::TestCase
     
     assert_equal expect, final
   end
+  
+  def test_contacts
+    auth = @msn.auth_sso(@email, @password, "MBI_KEY")
+    @msn.contacts_token = auth[:contacts_token]
+
+    contacts = @msn.contacts()
+    assert(contacts.size > 0)
+    
+    assert_equal(contacts.first[:contactId].size, 36)
+    assert(contacts.first[:contactType].size > 0)
+    assert(contacts.first[:firstName].size > 0)
+    assert(contacts.first[:lastName].size > 0)
+    assert(contacts.first[:passportName].size > 0)
+    assert(contacts.first[:displayName].size > 0)
+    
+    puts contacts.first
+  end
 end

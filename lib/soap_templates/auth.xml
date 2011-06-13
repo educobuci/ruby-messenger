@@ -25,6 +25,7 @@
   </Header>
   <Body>
     <ps:RequestMultipleSecurityTokens xmlns:ps="http://schemas.microsoft.com/Passport/SoapServices/PPCRL" Id="RSTS">
+      
       <wst:RequestSecurityToken Id="RST0">
         <wst:RequestType>http://schemas.xmlsoap.org/ws/2004/04/security/trust/Issue</wst:RequestType>
         <wsp:AppliesTo>
@@ -33,6 +34,7 @@
           </wsa:EndpointReference>
         </wsp:AppliesTo>
       </wst:RequestSecurityToken>
+      
       <wst:RequestSecurityToken Id="RST1">
         <wst:RequestType>http://schemas.xmlsoap.org/ws/2004/04/security/trust/Issue</wst:RequestType>
         <wsp:AppliesTo>
@@ -42,6 +44,7 @@
         </wsp:AppliesTo>
         <wsse:PolicyReference URI="POLICY"></wsse:PolicyReference>
       </wst:RequestSecurityToken>
+      
       <wst:RequestSecurityToken Id="RST2">
         <wst:RequestType>http://schemas.xmlsoap.org/ws/2004/04/security/trust/Issue</wst:RequestType>
         <wsp:AppliesTo>
@@ -49,7 +52,7 @@
             <wsa:Address>contacts.msn.com</wsa:Address>
           </wsa:EndpointReference>
         </wsp:AppliesTo>
-        <wsse:PolicyReference URI="?fs=1&amp;id=24000&amp;kv=9&amp;rn=93S9SWWw&amp;tw=0&amp;ver=2.1.6000.1"></wsse:PolicyReference>
+        <wsse:PolicyReference URI="MBI"></wsse:PolicyReference>
       </wst:RequestSecurityToken>
     </ps:RequestMultipleSecurityTokens>
   </Body>

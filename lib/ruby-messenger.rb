@@ -15,6 +15,8 @@ class RubyMessenger
   SSO_HOST = "https://login.live.com/RST.srf"
   SSO_MSN_HOST = "https://msnia.login.live.com/pp550/RST.srf"
   
+  attr_accessor :contacts_token
+  
   def initialize(host=DEFAULT_HOST, port=DEFAULT_PORT)
     @host = host
     @port = port
@@ -63,6 +65,35 @@ class RubyMessenger
     @socket.close
   end
   
+  def contacts
+    template = File.open("lib/soap_templates/adressbook.xml").read()
+    template.gsub!(/CONTACTS_TOKEN/, self.contacts_token.gsub!("&", "&amp;"))
+        
+    uri = URI.parse("https://contacts.msn.com/abservice/abservice.asmx")
+    http = Net::HTTP.new(uri.host, 443)
+    http.use_ssl = true
+    response = nil
+    http.start do |http|
+      response = http.post(uri.request_uri, template, "SOAPAction" => "http://www.msn.com/webservices/AddressBook/ABFindAll", "Content-Type" => "text/xml")
+    end
+    
+    doc = Nokogiri::XML(response.body) {|c| c.noblanks }
+    doc.remove_namespaces! # your life is easy now...
+    
+    result = doc.xpath("//Contact").map do |node|
+      {
+        :contactId => node.xpath("contactId").text,
+        :contactType => node.xpath("contactInfo/contactType").text,
+        :firstName => node.xpath("contactInfo/firstName").text,
+        :lastName => node.xpath("contactInfo/lastName").text,
+        :passportName => node.xpath("contactInfo/passportName").text,
+        :displayName => node.xpath("contactInfo/displayName").text,
+      }
+    end
+    
+    return result
+  end
+  
   def auth_sso(email, password, policy)
     template = File.open("lib/soap_templates/auth.xml").read()
     template.gsub!(/EMAIL/, email)
@@ -82,7 +113,7 @@ class RubyMessenger
     
     ticket = (doc.xpath "//wsse:BinarySecurityToken", "wsse" => "http://schemas.xmlsoap.org/ws/2003/06/secext")[0].text
     secret = (doc.xpath "//wst:BinarySecret", "wst" => "http://schemas.xmlsoap.org/ws/2004/04/trust")[1].text    
-    contacts_token = (doc.xpath "//wst:BinarySecret", "wst" => "http://schemas.xmlsoap.org/ws/2004/04/trust")[2].text
+    contacts_token = (doc.xpath "//wsse:BinarySecurityToken", "wsse" => "http://schemas.xmlsoap.org/ws/2003/06/secext")[1].text
     
     return { :ticket => ticket, :secret => secret, :contacts_token => contacts_token }
   end
