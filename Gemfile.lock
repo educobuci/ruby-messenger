@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    eventmachine (0.12.10)
     nokogiri (1.4.4)
     ruby-hmac (0.4.0)
     uuidtools (2.1.2)
@@ -9,6 +10,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  eventmachine
   nokogiri
   ruby-hmac
   uuidtools

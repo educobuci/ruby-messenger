@@ -36,7 +36,7 @@ class RubyMessenger
     
     @socket.close
     
-    # Gets SSO policy and nounce
+    # Gets SSO policy and nonce
     @socket = TCPSocket.open(sb_host, sb_port)
     ver MSNP_VERSION
     cvr "#{DEFAULT_CVR} #{email}"
@@ -58,10 +58,20 @@ class RubyMessenger
     
     chg "NLN"
     
-    while (l = @socket.readpartial 1014).size > 0
-      puts l
-    end    
-    
+    Thread.new do
+      listen
+    end
+  end
+  
+  def listen
+    while (buffer = @socket.readpartial 1024).size > 0
+      buffer.split("\r\n").map do |text|
+        puts "\e[32m< #{text}\e[0m\n\n"
+      end
+    end
+  end
+  
+  def disconnect
     @socket.close
   end
   
@@ -157,9 +167,14 @@ class RubyMessenger
     send_command(method.to_s.upcase, args[0])
   end
   
+  def send_assync(command, value)
+    data = "#{command} #{tid} #{value}"
+    @socket.puts data
+    @socket.flush
+  end
+  
   def send_command(command,value)
     data = "#{command} #{tid} #{value}"
-
     puts "> #{data}"
 
     @socket.puts data

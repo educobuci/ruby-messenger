@@ -9,7 +9,7 @@ class RubyMessengerTest < Test::Unit::TestCase
   end
   
   def test_connect    
-    #@msn.connect(@email, @password)
+    @msn.connect(@email, @password)
   end
   
   def test_sso
@@ -44,6 +44,6 @@ class RubyMessengerTest < Test::Unit::TestCase
     assert(contacts.first[:passportName].size > 0)
     assert(contacts.first[:displayName].size > 0)
     
-    puts contacts.first
+    puts contacts.to_s
   end
 end
